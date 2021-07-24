@@ -53,7 +53,13 @@ class Rating:
         return re.findall(r'\d+', url)[0]
         
     @staticmethod
-    def load_info(html_part,ret_format="objs"):
+    def load_info(data,in_format,ret_format="objs"):
+        if in_format == "json":
+            json_part = data
+
+        else:
+            html_part = data
+
         try:
             li = html_part.find(id="ratingsList").contents
         except:
