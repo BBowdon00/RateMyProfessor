@@ -8,8 +8,8 @@
 <div align="center">
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)]() 
-  [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/BBowdon/RateMyProfessor/issues)
-  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/BBowdon/RateMyProfessor/pulls)
+  [![GitHub Issues](https://img.shields.io/github/issues/BBowdon/RateMyProfessor.svg)](https://github.com/BBowdon/RateMyProfessor/issues)
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/BBowdon/RateMyProfessor.svg)](https://github.com/BBowdon/RateMyProfessor/pulls)
 
 </div>
 
@@ -50,19 +50,6 @@ Python3
 ```
 
 ### Installing
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
 
 End with an example of getting some data out of the system or using it for a little demo.
 
@@ -72,7 +59,7 @@ Give an example
 
 ## 🎈 Usage <a name="usage"></a>
 Make sure the notes.txt file is in your path when running rate.py
-```py
+```sh
 python3 rate.py
 ```
 
