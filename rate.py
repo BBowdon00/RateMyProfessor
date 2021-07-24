@@ -81,7 +81,7 @@ class Rating:
                     grade = h.span.string
                     break
             obj = Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id)
-            print(ret_format)
+            #print(ret_format)
             if(ret_format=="objs"):
                 ratings.append(obj)
             elif(ret_format=="csv"):

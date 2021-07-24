@@ -7,12 +7,12 @@ import json
 import requests
 from tqdm import tqdm
 
-MAX_THREADS = 10
+MAX_THREADS = 17
 csv_list = []
 def download_prof(url):
     # Access class and load info and print to csv
     base_url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + url
-    print(base_url)
+    #print(base_url)
     try:
         page = requests.get(base_url)
     except:
@@ -36,18 +36,18 @@ def get_data(profs):
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
             #print(f"Thread starting for PROF: {id_num}")
-            futures = {executor.submit(download_prof,id_num): id_num for id_num in tqdm(profs)}
-            f = open("test1.csv", "a")
-            
-            for fut in concurrent.futures.as_completed(futures):
+            futures = {executor.submit(download_prof,id_num): id_num for id_num in profs}
+            f = open("test1.csv", "w")
+            f.write("Professor,University,Quality,Difficulty,Date,Grade,PID,UID")
+            for fut in tqdm(concurrent.futures.as_completed(futures)):
                 f.write("".join(fut.result()))
             f.close()
-
 def main():
     # First grab IDs from dictionary in text document
-    teacher_num = 5
+    teacher_num = 100
     names = open("names.txt", "r")
     prof_dict = json.load(names)
+    names.close()
     #prof_list = np.array(prof_dict.values()[:teacher_num)
     prof_list = list(prof_dict.keys())[:teacher_num]
     get_data(prof_list)
