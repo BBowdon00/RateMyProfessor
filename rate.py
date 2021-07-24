@@ -35,6 +35,12 @@ class Rating:
         x=x+"PID: " + self.pid + "\n"
         x=x+"UID: " + self.uid + "\n"
         return x
+    
+    def csv_rep(self):
+        #csv =  ",".join(list(vars(self).values()))+"\n"
+        csv = self.professor + "," + self.school + "\n"
+        return csv
+
     def __repr__(self):
         return str(self)
 
@@ -46,7 +52,7 @@ class Rating:
         return re.findall(r'\d+', url)[0]
         
     @staticmethod
-    def load_info(html_part):
+    def load_info(html_part,ret_format="objs"):
         try:
             li = html_part.find(id="ratingsList").contents
         except:
@@ -57,7 +63,7 @@ class Rating:
         u_id = Rating.get_id(html_part.select_one('.NameTitle__Title-dowf0z-1').a['href'])
         p_id = Rating.get_id(html_part.select_one('.NameLink__StyledNameLink-sc-4u2ek-0').a['href'])
         # Can remove the u and p name selectors. Use the dict to lookup the values for names.
-
+        print("Begginning of program")
         ratings = []
         for x in li:
             if x.select('.GAMAdInfeed__InfeedAdWrapper-rvdgxi-0'):
@@ -75,7 +81,20 @@ class Rating:
                     #print("GRADE: " + h.span.string)
                     grade = h.span.string
                     break
-            ratings.append(Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id))
+            obj = Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id)
+            print(ret_format)
+            if(ret_format=="objs"):
+                ratings.append(obj)
+            elif(ret_format=="csv"):
+                #print(obj)
+                #print("CSV representation" +  obj.csv_rep())
+                #print(obj.csv_rep())
+                ratings.append(obj.csv_rep())
+            else:
+                print("Format not specified correctly")
+        
+        #print(ratings)
+        #print("End of program")
         return ratings
 
 def main():

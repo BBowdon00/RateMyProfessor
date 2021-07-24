@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+ <img width=900px height=400px src="https://fitchburgpoint.com/wp-content/uploads/2021/03/finalprofessorratings-900x506.png" alt="Project logo"></a>
 </p>
 
 <h3 align="center">RateMyProfessor Scraper and Analyzer</h3>
@@ -8,9 +8,8 @@
 <div align="center">
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)]() 
-  [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+  [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/BBowdon/RateMyProfessor/issues)
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/BBowdon/RateMyProfessor/pulls)
 
 </div>
 
@@ -25,6 +24,7 @@
 - [Getting Started](#getting_started)
 - [Usage](#usage)
 - [Built Using](#built_using)
+- [The Code](#code)
 - [TODO](../TODO.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
@@ -80,6 +80,9 @@ python3 rate.py
 - Python3 - Codebase
 - PowerShell - Initial Testing
 
+## The Code <a name "code"></a>
+What follows is an explanation of my programming choices and how the program works.  
+
 ## ✍️ Authors <a name = "authors"></a>
 - [Benjamin Bowdon](https://github.com/BBowdon) - Idea & Initial work
 
@@ -89,6 +92,4 @@ See also the list of [contributors](https://github.com/kylelobo/The-Documentatio
 One of my goals with this small projects is to increase familiarity with the VIM editor. This project was exclusively developed in the Linux command line using VIM.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
+- [Python Multiprocessing](https://rednafi.github.io/digressions/python/2020/04/21/python-concurrent-futures.html)
