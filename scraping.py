@@ -38,6 +38,7 @@ def get_data(profs):
             #print(f"Thread starting for PROF: {id_num}")
             futures = {executor.submit(download_prof,id_num): id_num for id_num in tqdm(profs)}
             f = open("test1.csv", "a")
+            
             for fut in concurrent.futures.as_completed(futures):
                 f.write("".join(fut.result()))
             f.close()

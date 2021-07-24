@@ -3,14 +3,17 @@ import requests
 import lxml
 import re
 
-
-# TODO: Write the web scraping in python
-# TODO: Implement the threading
-# Basically have threads sending the requests and passing them to other threads searching html and populating objects
-
-
 class Rating:
-    def __init__(self, professor, school, quality, difficulty, date, grade=None, pid=None,uid=None):
+    name_selector = '.NameTitle__Name-dowf0z-0'
+    school_selector = '.NameTitle__Title-dowf0z-1'
+    date_selector = '.TimeStamp__StyledTimeStamp-sc-9q2r30-0'
+    heading_selector = '.CourseMeta__StyledCourseMeta-x344ms-0'
+    uid_selector = '.NameTitle__Title-dowf0z-1'
+    pid_selector = '.NameLink__StyledNameLink-sc-4u2ek-0'
+    rating_selector = '.CardNumRating__CardNumRatingNumber-sc-17t4b9u-2'
+    blank_selector = '.GAMAdInfeed__InfeedAdWrapper-rvdgxi-0'
+
+    def __init__(self, professor, school, quality, difficulty, date, grade="None", pid="None",uid="None"):
         self.professor = professor
         self.school = school
         self.quality = quality
@@ -37,9 +40,7 @@ class Rating:
         return x
     
     def csv_rep(self):
-        #csv =  ",".join(list(vars(self).values()))+"\n"
-        csv = self.professor + "," + self.school + "\n"
-        return csv
+        return ",".join(list(vars(self).values()))+"\n"
 
     def __repr__(self):
         return str(self)
@@ -58,27 +59,25 @@ class Rating:
         except:
             return []
         teacher_id = 80895
-        p_name = html_part.select_one('.NameTitle__Name-dowf0z-0').get_text()
-        u_name = html_part.select_one('.NameTitle__Title-dowf0z-1').a.get_text()
-        u_id = Rating.get_id(html_part.select_one('.NameTitle__Title-dowf0z-1').a['href'])
-        p_id = Rating.get_id(html_part.select_one('.NameLink__StyledNameLink-sc-4u2ek-0').a['href'])
+        p_name = html_part.select_one(Rating.name_selector).get_text()[:-1]
+        u_name = html_part.select_one(Rating.school_selector).a.get_text()
+        u_id = Rating.get_id(html_part.select_one(Rating.uid_selector).a['href'])
+        p_id = Rating.get_id(html_part.select_one(Rating.pid_selector).a['href'])
         # Can remove the u and p name selectors. Use the dict to lookup the values for names.
-        print("Begginning of program")
+        #print("Beginning of program")
         ratings = []
-        for x in li:
-            if x.select('.GAMAdInfeed__InfeedAdWrapper-rvdgxi-0'):
+        for review in li:
+            if review.select(Rating.blank_selector):
                 continue
-            nums = x.select('.CardNumRating__CardNumRatingNumber-sc-17t4b9u-2')
-            date = x.select_one('.TimeStamp__StyledTimeStamp-sc-9q2r30-0').get_text()
+            nums = review.select(Rating.rating_selector)
+            date = re.sub("(st|nd|rd|th){1},{1}","",review.select_one(Rating.date_selector).get_text())
             quality=nums[0].string
             difficulty=nums[1].string
-            headers =x.select_one('.CourseMeta__StyledCourseMeta-x344ms-0').contents
+            headers =review.select_one(Rating.heading_selector).contents
             #print(len(headers))
-            grade= None
+            grade= "None"
             for h in headers:
                 if "Grade" in h.get_text():
-                    #print("Found grade!")
-                    #print("GRADE: " + h.span.string)
                     grade = h.span.string
                     break
             obj = Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id)
@@ -86,17 +85,12 @@ class Rating:
             if(ret_format=="objs"):
                 ratings.append(obj)
             elif(ret_format=="csv"):
-                #print(obj)
-                #print("CSV representation" +  obj.csv_rep())
-                #print(obj.csv_rep())
                 ratings.append(obj.csv_rep())
             else:
                 print("Format not specified correctly")
         
-        #print(ratings)
-        #print("End of program")
         return ratings
-
+"""
 def main():
     total_ratings = []
     professors = dict()
@@ -113,3 +107,4 @@ def main():
     print(total_ratings)
 if __name__ == "__main__":
     main()
+"""
