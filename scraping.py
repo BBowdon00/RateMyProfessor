@@ -14,11 +14,10 @@ import requests
 import json
 
 headers = {
-  'Connection': 'keep-alive',
   'sec-ch-ua': '" Not;A Brand";v="99", "Microsoft Edge";v="91", "Chromium";v="91"',
   'Authorization': 'Basic dGVzdDp0ZXN0',
   'sec-ch-ua-mobile': '?0',
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36 Edg/91.0.864.71',
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
   'Content-Type': 'application/json',
   'Accept': '*/*',
   'Origin': 'https://www.ratemyprofessors.com',
@@ -79,7 +78,7 @@ def get_data(profs,in_mode, out_mode):
             f.close()
 def main():
     # First grab IDs from dictionary in text document
-    teacher_num = 100
+    teacher_num = 50000
     names = open("names.txt", "r")
     prof_dict = json.load(names)
     names.close()
