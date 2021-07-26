@@ -57,8 +57,8 @@ class Rating:
         ratings = []
         if in_format == "json":
             json_part = data
-            p_name=json_part["firstName"]+" "+json_part["lastName"]
-            u_name=json_part["school"]["name"]
+            p_name=json_part["firstName"]+" "+json_part["lastName"].replace(",","") # sanitize prof name
+            u_name=json_part["school"]["name"].replace(",","") # to sanitize uni name
             u_id=str(json_part["school"]["legacyId"])
             p_id=str(json_part["legacyId"])
             json_part=json_part["ratings"]["edges"]
@@ -81,8 +81,8 @@ class Rating:
                 li = html_part.find(id="ratingsList").contents
             except:
                 return []
-            p_name = html_part.select_one(Rating.name_selector).get_text()[:-1]
-            u_name = html_part.select_one(Rating.school_selector).a.get_text()
+            p_name = html_part.select_one(Rating.name_selector).get_text()[:-1].replace(",","")
+            u_name = html_part.select_one(Rating.school_selector).a.get_text().replace(",","")
             u_id = Rating.get_id(html_part.select_one(Rating.uid_selector).a['href'])
             p_id = Rating.get_id(html_part.select_one(Rating.pid_selector).a['href'])
             # Can remove the u and p name selectors. Use the dict to lookup the values for names.
