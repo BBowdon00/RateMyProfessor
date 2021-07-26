@@ -51,44 +51,64 @@ class Rating:
     @staticmethod
     def get_id(url):
         return re.findall(r'\d+', url)[0]
-        
+    
     @staticmethod
-    def load_info(html_part,ret_format="objs"):
-        try:
-            li = html_part.find(id="ratingsList").contents
-        except:
-            return []
-        teacher_id = 80895
-        p_name = html_part.select_one(Rating.name_selector).get_text()[:-1]
-        u_name = html_part.select_one(Rating.school_selector).a.get_text()
-        u_id = Rating.get_id(html_part.select_one(Rating.uid_selector).a['href'])
-        p_id = Rating.get_id(html_part.select_one(Rating.pid_selector).a['href'])
-        # Can remove the u and p name selectors. Use the dict to lookup the values for names.
-        #print("Beginning of program")
+    def load_info(data,in_format,ret_format="objs"):
         ratings = []
-        for review in li:
-            if review.select(Rating.blank_selector):
-                continue
-            nums = review.select(Rating.rating_selector)
-            date = re.sub("(st|nd|rd|th){1},{1}","",review.select_one(Rating.date_selector).get_text())
-            quality=nums[0].string
-            difficulty=nums[1].string
-            headers =review.select_one(Rating.heading_selector).contents
-            #print(len(headers))
-            grade= "None"
-            for h in headers:
-                if "Grade" in h.get_text():
-                    grade = h.span.string
-                    break
-            obj = Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id)
-            #print(ret_format)
-            if(ret_format=="objs"):
-                ratings.append(obj)
-            elif(ret_format=="csv"):
-                ratings.append(obj.csv_rep())
-            else:
-                print("Format not specified correctly")
-        
+        if in_format == "json":
+            json_part = data
+            p_name=json_part["firstName"]+" "+json_part["lastName"]
+            u_name=json_part["school"]["name"]
+            u_id=str(json_part["school"]["legacyId"])
+            p_id=str(json_part["legacyId"])
+            json_part=json_part["ratings"]["edges"]
+            grade="None"
+            for node in json_part:
+                review = node["node"]
+                date = review["date"][:10]
+                quality=str(review["clarityRating"])
+                difficulty=str(review["difficultyRating"])
+                obj = Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id)
+                if review["grade"]!="":
+                    grade=review["grade"]
+                if(ret_format=="csv"):
+                    ratings.append(obj.csv_rep())
+                elif(ret_format=="objs"):
+                    ratings.append(obj)
+        elif in_format=="html":
+            html_part = data
+            try:
+                li = html_part.find(id="ratingsList").contents
+            except:
+                return []
+            p_name = html_part.select_one(Rating.name_selector).get_text()[:-1]
+            u_name = html_part.select_one(Rating.school_selector).a.get_text()
+            u_id = Rating.get_id(html_part.select_one(Rating.uid_selector).a['href'])
+            p_id = Rating.get_id(html_part.select_one(Rating.pid_selector).a['href'])
+            # Can remove the u and p name selectors. Use the dict to lookup the values for names.
+            #print("Beginning of program")
+            for review in li:
+                if review.select(Rating.blank_selector):
+                    continue
+                nums = review.select(Rating.rating_selector)
+                date = re.sub("(st|nd|rd|th){1},{1}","",review.select_one(Rating.date_selector).get_text())
+                quality=nums[0].string
+                difficulty=nums[1].string
+                headers =review.select_one(Rating.heading_selector).contents
+                #print(len(headers))
+                grade= "None"
+                for h in headers:
+                    if "Grade" in h.get_text():
+                        grade = h.span.string
+                        break
+                obj = Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id)
+                #print(ret_format)
+                if(ret_format=="objs"):
+                    ratings.append(obj)
+                elif(ret_format=="csv"):
+                    ratings.append(obj.csv_rep())
+                else:
+                    print("Format not specified correctly") 
         return ratings
 """
 def main():
