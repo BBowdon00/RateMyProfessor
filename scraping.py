@@ -8,7 +8,7 @@ import requests
 import base64
 from tqdm import tqdm
 
-MAX_THREADS = 17
+MAX_THREADS = 30
 csv_list = []
 import requests
 import json
@@ -73,7 +73,7 @@ def get_data(profs,in_mode, out_mode):
             #print(f"Thread starting for PROF: {id_num}")
             futures = {executor.submit(download_prof,id_num,in_mode,out_mode): id_num for id_num in profs}
             f = open("test1.csv", "w")
-            f.write("Professor,University,Quality,Difficulty,Date,Grade,PID,UID")
+            f.write("Professor,University,Quality,Difficulty,Date,Grade,PID,UID\n")
             for fut in tqdm(concurrent.futures.as_completed(futures)):
                 f.write("".join(fut.result()))
             f.close()

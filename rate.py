@@ -66,7 +66,7 @@ class Rating:
             for node in json_part:
                 review = node["node"]
                 date = review["date"][:10]
-                quality=str(review["clarityRating"])
+                quality=str((review["clarityRating"]+review["helpfulRating"])/2)
                 difficulty=str(review["difficultyRating"])
                 obj = Rating(p_name,u_name,quality,difficulty,date,grade,p_id,u_id)
                 if review["grade"]!="":
